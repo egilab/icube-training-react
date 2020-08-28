@@ -1,0 +1,213 @@
+body {
+    background : #ecf0f1;
+    margin     : 0 auto;
+    width      : 1000px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#root {
+    background    : #ffffff;
+    padding-bottom: 50px;
+}
+
+.wrapper {
+    padding : 0 15px;
+    overflow: hidden;
+}
+
+.section-banner img {
+    width: 100%;
+}
+
+.nav-menu {
+    padding   : 0;
+    margin    : 0;
+    list-style: none;
+    background: #c0392b;
+}
+
+.nav-menu li {
+    display: inline-block;
+    padding: 15px;
+}
+
+.nav-menu li a {
+    color          : #ffffff;
+    text-decoration: none;
+    font-weight    : bold;
+}
+
+.section-category {
+    display              : grid;
+    grid-template-columns: auto auto auto auto;
+    row-gap              : 30px;
+    justify-content      : space-between;
+}
+
+.section-pdp {
+    margin-top           : 30px;
+    min-height           : 550px;
+    display              : grid;
+    grid-template-columns: auto auto;
+    column-gap           : 20px;
+}
+
+.item-info {
+    text-align: center;
+}
+
+.item-info p {
+    margin: 5px 0;
+}
+
+.item-info a {
+    color    : red;
+    font-size: 14px;
+}
+
+.title {
+    border-bottom : 1px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom : 30px;
+}
+
+.price {
+    font-weight: bold;
+}
+
+.price-2 {
+    font-weight: bold;
+    font-size  : 18px;
+    color      : red;
+}
+
+.actions {
+    display       : flex;
+    align-content : center;
+    flex-direction: row;
+    margin        : 20px 0;
+}
+
+.actions select,
+.actions input {
+    height    : 40px;
+    width     : 60px;
+    padding   : 0 5px;
+    font-size : 16px;
+    border    : 2px solid #000000;
+    text-align: center;
+    margin    : 0 20px;
+}
+
+.actions .gotocart {
+    margin-left     : 50px;
+    height          : 40px;
+    width           : 140px;
+    background-color: #c0392b;
+    color           : #ffffff;
+    font-weight     : bold;
+    font-size       : 16px;
+    border-radius   : 5px;
+    border          : 0;
+    cursor          : pointer;
+}
+
+.actions .qty-action {
+    border          : 0;
+    height          : 40px;
+    width           : 20px;
+    background-color: #ffffff;
+    color           : #000000;
+    font-weight     : bold;
+    font-size       : 45px;
+    line-height     : 20px;
+    cursor          : pointer;
+}
+
+.actions .qty-action:focus {
+    outline: none;
+}
+
+.table-cart {
+    width: 100%;
+}
+
+.table-cart td {
+    text-align   : center;
+    padding      : 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.checkout {
+    background-color: #c0392b;
+    color           : #ffffff;
+    font-weight     : bold;
+    font-size       : 16px;
+    border-radius   : 5px;
+    text-decoration : none;
+    padding         : 15px 25px;
+    float           : right;
+    clear           : left;
+    margin-top      : 20px;
+    border          : 0;
+}
+
+.widget-title {
+    display        : flex;
+    justify-content: space-between;
+    align-items    : center;
+}
+
+.widget-title a {
+    font-size      : 12px;
+    color          : #fff;
+    background     : #c0392b;
+    padding        : 5px;
+    border-radius  : 5px;
+    text-decoration: none;
+}
+
+.form-register {
+    min-height: 500px;
+}
+
+.form-group {
+    margin-bottom: 35px;
+}
+
+.form-group label {
+    display    : block;
+    font-size  : 12px;
+    font-weight: bold;
+    color      : #7f8c8d;
+}
+
+.form-group input {
+    display      : block;
+    height       : 30px;
+    width        : 100%;
+    border       : 0;
+    border-bottom: 1px solid #7f8c8d;
+}
+
+.form-group input:focus {
+    border       : 0;
+    border-bottom: 1px solid #000000;
+    outline      : none;
+}
+
+.action-register {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.action-register button {
+    background   : #000000;
+    border-radius: 10px;
+    color        : #ffffff;
+    border       : 0;
+    padding      : 15px 50px;
+    font-size    : 15px;
+    cursor       : pointer;
+    text-align   : center;
+}
