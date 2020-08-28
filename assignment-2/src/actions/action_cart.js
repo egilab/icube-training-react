@@ -8,13 +8,7 @@ const action_mincart = (item) => ({
     item : item 
 });
 
-const action_deletecart = (item) => ({
-    type: "ACTION_DELETECART",
-    item : item 
-});
-
 export {
     action_addcart,
-    action_mincart,
-    action_deletecart
+    action_mincart
 }
