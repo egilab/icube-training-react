@@ -1,32 +1,68 @@
 import React from 'react';
 import {View, Text, ScrollView, SafeAreaView, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {DummyCategory} from '../../data';
+import {gql, useQuery} from '@apollo/client';
+
+const CATEGORY_LIST = gql`
+  {
+    categoryList(filters: {ids: {eq: "2"}}) {
+      children {
+        id
+        name
+        url_key
+        children {
+          id
+          name
+          url_key
+          children {
+            id
+            name
+            url_key
+          }
+        }
+      }
+    }
+  }
+`;
 
 const Category = ({navigation}) => {
+  const response = useQuery(CATEGORY_LIST);
+  const {loading, error, data} = response;
+  if (loading) {
+    return <Text>Loading ...</Text>;
+  }
+  if (error) {
+    return <Text>Error...</Text>;
+  }
+
+  const category = data.categoryList;
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.pageScreenTitle}>
         <Text style={styles.pageTitle}>Category List</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+          <Text style={styles.cartTitle}>Cart</Text>
+        </TouchableOpacity>
       </View>
       <ScrollView>
-        {DummyCategory.map((val, index) => (
-          <View key={index} style={styles.listItem}>
+        {category[0].children.map((val, key) => (
+          <View key={key} style={styles.listItem}>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('ProductList', {
-                  categoryName: val.name,
+                  idCategory: val.id,
                 })
               }>
               <Text style={styles.listName}>{val.name}</Text>
             </TouchableOpacity>
-            {val.child.length > 0 &&
-              val.child.map((valchild) => (
+            {val.children.length > 0 &&
+              val.children.map((valchild) => (
                 <View key={valchild.id} style={styles.listChild}>
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate('ProductList', {
-                        categoryName: valchild.name,
+                        idCategory: valchild.id,
                       })
                     }>
                     <Text>{valchild.name}</Text>
@@ -52,10 +88,18 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   pageTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  cartTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
   listItem: {
     marginHorizontal: 20,

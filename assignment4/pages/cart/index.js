@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,28 +6,101 @@ import {
   SafeAreaView,
   StyleSheet,
   Image,
+  ToastAndroid,
 } from 'react-native';
-import {DummyProducts} from '../../data';
+import {gql, useQuery} from '@apollo/client';
+import AsyncStorage from '@react-native-community/async-storage';
+
+const CART_LIST = gql`
+  query Cart($cartId: String!) {
+    cart(cart_id: $cartId) {
+      items {
+        id
+        product {
+          name
+          sku
+          thumbnail {
+            url
+          }
+        }
+        prices {
+          price {
+            value
+            currency
+          }
+        }
+        quantity
+      }
+      prices {
+        grand_total {
+          value
+          currency
+        }
+      }
+    }
+  }
+`;
 
 const Cart = () => {
+  const [cartId, setCartId] = useState('');
+  AsyncStorage.getItem('carttoken')
+    .then((res) => {
+      setCartId(res);
+    })
+    .catch((err) => ToastAndroid.show(err.message, ToastAndroid.LONG));
+  const response = useQuery(CART_LIST, {
+    variables: {cartId: cartId},
+    fetchPolicy: 'network-only',
+  });
+  const {loading, error, data} = response;
+  const carts = data !== undefined ? data.cart.items : [];
+  const totals = data !== undefined ? data.cart.prices.grand_total : '';
+  const [valid, setValidImage] = useState(true);
+
+  if (loading) {
+    return <Text>Loading ...</Text>;
+  }
+  if (error) {
+    return <Text>Error...</Text>;
+  }
+
+  const noimage = 'https://swiftpwa.testingnow.me/assets/img/placeholder.png';
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        {DummyProducts.map((val, index) => (
+        {carts.map((val, index) => (
           <View key={index} style={styles.listItem}>
             <View>
-              <Image style={styles.imgProduct} source={val.img} />
+              <Image
+                onError={() => setValidImage(false)}
+                style={styles.imgProduct}
+                source={{uri: val.product.thumbnail.url}}
+              />
             </View>
             <View style={styles.productInfo}>
-              <Text style={styles.productItemName}>{val.name}</Text>
-              <Text style={styles.productItemPrice}>{val.price}</Text>
-              <Text>Qty : 2</Text>
+              <Text style={styles.productItemName}>{val.product.name}</Text>
+              <Text
+                style={
+                  styles.productItemName
+                }>{`SKU : ${val.product.sku}`}</Text>
+              <Text style={styles.productItemPrice}>
+                {`${val.prices.price.currency} ${parseInt(
+                  val.prices.price.value,
+                  10,
+                ).toFixed(2)}`}
+              </Text>
+              <Text>Qty : {val.quantity}</Text>
             </View>
           </View>
         ))}
       </ScrollView>
       <View>
-        <Text style={styles.textTotal}>Total : Rp. 3000.000</Text>
+        <Text style={styles.textTotal}>
+          {`Total : ${totals.currency} ${parseInt(totals.value, 10).toFixed(
+            2,
+          )}`}
+        </Text>
       </View>
     </SafeAreaView>
   );
@@ -38,7 +111,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white',
-    paddingVertical: 20,
+    paddingBottom: 20,
+  },
+  pageScreenTitle: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+  },
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   listItem: {
     flexDirection: 'row',
